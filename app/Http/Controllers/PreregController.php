@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use stdClass;
 use DB;
+use Carbon\Carbon;
 
 class PreregController extends Controller
 {
@@ -14,36 +15,45 @@ class PreregController extends Controller
 
     public function post(Request $request){
     	$validatedData = $request->validate([
-	        $request->select => 'required',
+	        // $request->select => 'required',
+	        'ic' => 'required|max:20|min:10',
+	        // 'name' => 'required',
 	    ]);
 
-	    if($request->select = 'ic'){
-	    	$where_field = "Newic";
-	    }else{
-	    	$where_field = "telhp";
-	    }
+	    // if($request->select = 'ic'){
+	    // 	$where_field = "Newic";
+	    // }else{
+	    // 	$where_field = "telhp";
+	    // }
 
-	    $pat_mast = DB::table('hisdb.pat_mast')
-	    				->where($where_field,'=', $request[$request->select]);
+	    $pre_episode = DB::table('pre_episode')
+	    				->whereDate('adddate', '=', Carbon::now("Asia/Kuala_Lumpur"))
+	    				->where('Newic','=', $request->ic);
 
-	    if($pat_mast->exists()){
-	    	$pat_mast_obj = $pat_mast->first();
-	    	$pre_episode = DB::table('hisdb.pre_episode')->where('mrn','=',$pat_mast_obj->MRN);
+	   	if($pre_episode->exists()){
+	    	return redirect()->back()->withSuccess('You already pre-registered today');
+    	}
 
-	    	if($pre_episode->exists()){
-	    		return redirect()->back()->withSuccess('Patient already pre-registered');
-	    	}else{
-	    		DB::table('hisdb.pre_episode')
-	    			->insert([
-	    				'compcode' => '9A',
-	    				'mrn' => $pat_mast_obj->MRN
-	    			]);
+	    // $pat_mast = DB::table('hisdb.pat_mast')
+	    // 				->where($where_field,'=', $request[$request->select]);
 
-	    		return redirect()->back()->withSuccess('Patient succesfully pre-registered');
-	    	}
-	    }else{
-	    	return redirect()->back()->withErrors(['Patient doesnt exists','or wrong handphone or ic']);
-	    }
+	    $add_array = [
+			'compcode' => '9A',
+			'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+			'Newic' => $request->ic,
+	    ];
+
+	    // if($pat_mast->exists()){
+	    // 	$pat_mast_obj = $pat_mast->first();
+	    // 	$add_array = array_merge($add_array, ['mrn' => $pat_mast_obj->MRN]);
+	    // }else{
+	    // 	// pleae register at counter alert
+	    // 	// $add_array = array_merge($add_array, ['mrn' => '00000']);
+	    // }
+
+	    DB::table('pre_episode')->insert($add_array);
+
+    	return redirect()->back()->withSuccess("Thank you, you're succesfully pre-registered");
 
     }
 }

@@ -21,15 +21,32 @@
     </head>
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#select").change(function(){
-                if($(this).val() == 'ic'){
-                    $("#icnumdiv").show();
-                    $("#hpdiv").hide();
-                }else{
-                    $("#hpdiv").show();
-                    $("#icnumdiv").hide();
-                }
-            });
+            // $("#select").change(function(){
+            //     if($(this).val() == 'ic'){
+            //         $("#icnumdiv").show();
+            //         $("#hpdiv").hide();
+            //     }else{
+            //         $("#hpdiv").show();
+            //         $("#icnumdiv").hide();
+            //     }
+            // });
+
+            var qrcode_myic = localStorage.getItem('qrcode_myic');
+            console.log(qrcode_myic)
+            if(!qrcode_myic){
+                $('#button_').click(function(){
+                    console.log($('#ic').val());
+                    localStorage.setItem('qrcode_myic', $('#ic').val());
+                    $('#submit').click();
+                });
+            }else{
+                $('#ic').val(qrcode_myic);
+                $('#button_').click(function(){
+                    console.log($('#ic').val());
+                    localStorage.setItem('qrcode_myic', $('#ic').val());
+                    $('#submit').click();
+                });
+            }
 
         });
 
@@ -63,22 +80,27 @@
                     @endif
                     <form method="post" action="/prereg">
                         @csrf
-                        <div class="form-group" >
+                        <!-- <div class="form-group" >
                             <small for="select">Register Using: </small>
                             <select class="form-control form-control" id="select" name="select">
                               <option value="ic" selected="">I/C Number</option>
                               <option value="hp">Handphone</option>
                             </select>
-                        </div>
+                        </div> -->
                         <div class="form-group" id="icnumdiv">
                             <small for="ic">I/C Number</small>
                             <input type="text" class="@error('ic') is-invalid @enderror form-control" id="ic" name="ic" placeholder="e.g. 890128014381">
                         </div>
-                        <div class="form-group" id="hpdiv" style="display: none">
+                        <!-- <div class="form-group" id="hpdiv" style="display: none">
                             <small for="hp">Handphone</small>
                             <input type="text" class="@error('hp') is-invalid @enderror form-control" id="hp" name="hp" placeholder="e.g. 01123456789">
                         </div>
-                        <button type="submit" class="form-control btn btn-outline-primary">Pre-Register</button>
+                        <div class="form-group">
+                            <small for="name">Name</small>
+                            <input type="text" class="@error('name') is-invalid @enderror form-control" id="name" name="name" placeholder="Name">
+                        </div> -->
+                        <button type="button" id="button_" class="form-control btn btn-outline-primary">Submit</button>
+                        <button type="submit" id="submit" style="display: none;">Submit</button>
                     </form>
               </div>
             </div>
