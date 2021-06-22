@@ -41,6 +41,7 @@ class PreregController extends Controller
 	    $add_array = [
 			'compcode' => '9A',
 			'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+			'addtime' => Carbon::now("Asia/Kuala_Lumpur"),
 			'dept' => $request->dept,
 			'Newic' => $request->ic,
 	    ];

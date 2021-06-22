@@ -60,7 +60,7 @@
               <div class="card-body text-primary">
                     <div class="col-12" style="text-align: center">
                         <a class="navbar-brand" style="padding-top: 0">
-                            <img src="{{asset('/img/logo.JPG')}}" alt="logo" height="150px" width="auto">
+                            <img src="{{asset('/img/logo.jpg')}}" alt="logo" height="150px" width="auto">
                         </a>
                         <p>No 5-1-1, Jalan Medan PB1A, Seksyen 9, 43650<br>Bandar Baru Bangi, Selangor, Malaysia.<br>URL : medicsoft.com.my</p>
                     </div>
